@@ -68,5 +68,9 @@ git submodule update --init --recursive
 * **Project Report**: Details our methodology and concrete hardware changes, including CVA6+Ara multicore orchestration, a custom ternary-native Gemmini PE (mux-based path replacing multiplier-heavy MAC for `{-1,0,+1}` weights), and evaluation against baseline RISC-V configurations.
 * **Presentation**: Summarizes implementation constraints and outcomes, including CV-X-IF (CVA6) vs RoCC (Gemmini) interface mismatch, lane/vlen configuration studies, and single-core vs multicore scaling behavior.
 
+## 🤝 Upstream Community Engagement
+
+As part of the project, we opened a structured upstream guidance request in the Ara repository: [pulp-platform/ara#430](https://github.com/pulp-platform/ara/issues/430). The issue documents our reproducibility path from single-core setup to multicore CVA6+Ara experimentation, clearly states the hardware-configuration questions we faced, and captures practical integration gaps for future contributors working on similar multicore Ara workflows.
+
 ---
 *Developed as part of the "Hardware for AI" Course.*

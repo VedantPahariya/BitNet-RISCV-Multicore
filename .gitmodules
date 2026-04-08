@@ -1,0 +1,14 @@
+[submodule "Ara-Multicore"]
+	path = Ara-Multicore
+	url = https://github.com/VedantPahariya/Ara-Multicore.git
+[submodule "ara"]
+	path = ara
+	url = https://github.com/VedantPahariya/ara.git
+	branch = development
+[submodule "cva6"]
+	path = cva6
+	url = https://github.com/VedantPahariya/cva6.git
+	branch = vector-integration
+[submodule "Gemmini"]
+	path = Gemmini
+	url = https://github.com/VedantPahariya/Gemmini.git

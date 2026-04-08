@@ -29,14 +29,15 @@ Top-level multi-core SoC design, interconnects, and orchestration logic for scal
 
 ### 2. [Ara (Development Branch)](https://github.com/VedantPahariya/ara/tree/development)
 Our custom fork of the Ara vector processor. 
-* **Modifications**: Includes specific RVV 1.0 custom instructions and optimizations to optimally pipeline the 1-bit weight calculations needed by BitNet.
+* **Modifications**: We tuned the Ara RVV 1.0 execution path for BitNet kernels across the dispatcher/sequencer/VLSU flow and lane-level execution, then integrated and validated it in single-core and multicore CVA6+Ara configurations to improve vector-unit utilization on tiled matrix workloads.
 
 ### 3. [CVA6 (Vector-Integration Branch)](https://github.com/VedantPahariya/cva6/tree/vector-integration)
 Our branch of the Application class configurable RISC-V CPU (CVA6).
-* **Modifications**: Custom decoding and tight coupling for the Ara vector extension to dispatch 1-bit specific vector instructions seamlessly.
+* **Modifications**: We added tighter CVA6-Ara coupling and decode/dispatch integration for BitNet-oriented vector execution, and scaled this to multicore CVA6-Ara pairs to mitigate the reported single-issue bottleneck of one scalar core by enabling parallel issue across cores.
 
 ### 4. [Gemmini](https://github.com/VedantPahariya/Gemmini)
 Systolic array integration. We leverage the spatial architecture of Gemmini to co-process dense matrix operations that complement the vector-level optimizations.
+* **Modifications**: We implemented a custom Gemmini Processing Element (PE) for BitNet ternary weights (`{-1, 0, +1}`), replacing multiplier-based MAC paths with mux-based selection logic (`+activation`, `0`, or `-activation`) while keeping accumulation in standard precision. This reduced multiplier overhead (area/power), preserved ternary compute accuracy, and was integrated in our Chipyard-based Ara/CVA6 + Gemmini flow using Chisel.
 
 ---
 
@@ -44,15 +45,15 @@ Systolic array integration. We leverage the spatial architecture of Gemmini to c
 
 To clone this repository and pull all the associated submodules containing the complete system:
 
-`ash
+```bash
 git clone --recurse-submodules https://github.com/VedantPahariya/BitNet-RISCV-Multicore.git
 cd BitNet-RISCV-Multicore
-`
+```
 
 *Note: If you have already cloned the repository without submodules, run:*
-`ash
+```bash
 git submodule update --init --recursive
-`
+```
 
 ## 🛠️ Build and Simulation
 
@@ -64,8 +65,8 @@ git submodule update --init --recursive
 
 ## 📄 Documentation and Reports
 
-* **Project Report**: Details our methodology, bit-serial hardware enhancements, evaluation against baseline RISC-V cores, and final throughput/latency metrics.
-* **Presentation**: Slides detailing the architectural modifications and the BitNet deployment phase.
+* **Project Report**: Details our methodology and concrete hardware changes, including CVA6+Ara multicore orchestration, a custom ternary-native Gemmini PE (mux-based path replacing multiplier-heavy MAC for `{-1,0,+1}` weights), and evaluation against baseline RISC-V configurations.
+* **Presentation**: Summarizes implementation constraints and outcomes, including CV-X-IF (CVA6) vs RoCC (Gemmini) interface mismatch, lane/vlen configuration studies, and single-core vs multicore scaling behavior.
 
 ---
 *Developed as part of the "Hardware for AI" Course.*
